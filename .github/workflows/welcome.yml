@@ -1,0 +1,29 @@
+name: Post welcome comment
+on:
+  pull_request:
+    types: [opened]
+permissions:
+  pull-requests: write
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Post a welcome comment
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.payload.pull_request.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "👋 ¡Bienvenido! Gracias por tu PR."
+            })
+
+      - name: Nombre descriptivo de tu paso
+        run: |
+          # aquí va la instrucción shell que te pide el Step 3,
+          # por ejemplo:
+          echo "👍 ¡El workflow funciona correctamente!"
